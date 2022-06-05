@@ -3,10 +3,10 @@ package game
 type direction int
 
 const (
-	North direction = iota
-	East
-	South
-	West
+	up direction = iota
+	right
+	down
+	left
 )
 
 type head struct {
@@ -22,7 +22,7 @@ type Snake struct {
 func NewSnake() Snake {
 	return Snake{
 		head:          head{x: 2, y: 2},
-		headDirection: South,
+		headDirection: down,
 	}
 }
 
@@ -32,29 +32,29 @@ func (s *Snake) GetPosition() (int, int) {
 
 func (s *Snake) Move() {
 	switch s.headDirection {
-	case North:
+	case up:
 		s.head.y--
-	case East:
+	case right:
 		s.head.x++
-	case South:
+	case down:
 		s.head.y++
-	case West:
+	case left:
 		s.head.x--
 	}
 }
 
 func (s *Snake) TurnUp() {
-	s.headDirection = North
+	s.headDirection = up
 }
 
 func (s *Snake) TurnRight() {
-	s.headDirection = East
+	s.headDirection = right
 }
 
 func (s *Snake) TurnDown() {
-	s.headDirection = South
+	s.headDirection = down
 }
 
 func (s *Snake) TurnLeft() {
-	s.headDirection = West
+	s.headDirection = left
 }

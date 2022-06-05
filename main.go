@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 	"os"
 	"time"
 
@@ -26,9 +27,12 @@ func initialModel() model {
 }
 
 func (m model) View() string {
+	border := lipgloss.NewStyle().
+		Border(lipgloss.ThickBorder(), true, true)
+
 	s := ""
 	posX, posY := m.snake.GetPosition()
-	for row := 0; row < 30; row++ {
+	for row := 0; row < 20; row++ {
 		for col := 0; col < 30; col++ {
 			if posX == col && posY == row {
 				s += "X"
@@ -38,7 +42,7 @@ func (m model) View() string {
 		}
 		s += "\n"
 	}
-	return s
+	return border.Render(s)
 }
 
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
@@ -52,18 +56,18 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		switch msg.String() {
 		case "ctrl+c", "q":
 			return m, tea.Quit
-			case "w":
-				m.snake.TurnUp()
-				return m, nil
-			case "d":
-				m.snake.TurnRight()
-				return m, nil
-			case "s":
-				m.snake.TurnDown()
-				return m, nil
-			case "a":
-				m.snake.TurnLeft()
-				return m, nil
+		case "w":
+			m.snake.TurnUp()
+			return m, nil
+		case "d":
+			m.snake.TurnRight()
+			return m, nil
+		case "s":
+			m.snake.TurnDown()
+			return m, nil
+		case "a":
+			m.snake.TurnLeft()
+			return m, nil
 		}
 	}
 
