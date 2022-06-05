@@ -5,6 +5,8 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"os"
 	"time"
+
+	"go-snake/game"
 )
 
 const (
@@ -13,56 +15,22 @@ const (
 
 type frameMsg time.Time
 
-type Direction int
-
-const (
-	North Direction = iota
-	West
-	South
-	East
-)
-
-type head struct {
-	x int
-	y int
-}
-
-type snake struct {
-	head          head
-	currDirection Direction
-}
-
-func (s *snake) move() {
-	switch s.currDirection {
-	case North:
-		s.head.y--
-	case West:
-		s.head.x++
-	case South:
-		s.head.y++
-	case East:
-		s.head.x--
-	}
-}
-
 type model struct {
-	snake snake
+	snake game.Snake
 }
 
 func initialModel() model {
 	return model{
-		snake: snake{
-			head:          head{x: 2, y: 2},
-			currDirection: South,
-		},
+		snake: game.NewSnake(),
 	}
 }
 
 func (m model) View() string {
 	s := ""
+	posX, posY := m.snake.GetPosition()
 	for row := 0; row < 30; row++ {
-		for col := 0; col < 10; col++ {
-			if m.snake.head.x == col && m.snake.head.y == row {
+		for col := 0; col < 30; col++ {
+			if posX == col && posY == row {
 				s += "X"
 			} else {
 				s += " "
@@ -77,25 +45,25 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 
 	case frameMsg:
-		m.snake.move()
+		m.snake.Move()
 		return m, animate()
 
 	case tea.KeyMsg:
 		switch msg.String() {
 		case "ctrl+c", "q":
 			return m, tea.Quit
-		case "w":
-			m.snake.currDirection = North
-			return m, nil
-		case "d":
-			m.snake.currDirection = West
-			return m, nil
-		case "s":
-			m.snake.currDirection = South
-			return m, nil
-		case "a":
-			m.snake.currDirection = East
-			return m, nil
+			case "w":
+				m.snake.TurnUp()
+				return m, nil
+			case "d":
+				m.snake.TurnRight()
+				return m, nil
+			case "s":
+				m.snake.TurnDown()
+				return m, nil
+			case "a":
+				m.snake.TurnLeft()
+				return m, nil
 		}
 	}
 
