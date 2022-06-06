@@ -21,8 +21,8 @@ type Snake struct {
 
 func NewSnake() Snake {
 	return Snake{
-		head:          head{x: 2, y: 2},
-		headDirection: down,
+		head:          head{x: 10, y: 10},
+		headDirection: right,
 	}
 }
 

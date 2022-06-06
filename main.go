@@ -2,10 +2,12 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"strings"
+	"time"
+
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-	"os"
-	"time"
 
 	"go-snake/game"
 )
@@ -18,31 +20,43 @@ type frameMsg time.Time
 
 type model struct {
 	snake game.Snake
+	world game.World
+}
+
+func (m model) checkCollision() bool {
+	posX, posY := m.snake.GetPosition()
+	return posX < 0 || posY < 0 || posX >= m.world.ColumnCount || posY >= m.world.RowCount
 }
 
 func initialModel() model {
 	return model{
 		snake: game.NewSnake(),
+		world: game.World{
+			RowCount:    20,
+			ColumnCount: 30,
+		},
 	}
 }
 
 func (m model) View() string {
-	border := lipgloss.NewStyle().
-		Border(lipgloss.ThickBorder(), true, true)
-
-	s := ""
+	b := strings.Builder{}
 	posX, posY := m.snake.GetPosition()
-	for row := 0; row < 20; row++ {
-		for col := 0; col < 30; col++ {
+	for row := 0; row < m.world.RowCount; row++ {
+		for col := 0; col < m.world.ColumnCount; col++ {
 			if posX == col && posY == row {
-				s += "X"
+				b.WriteRune('X')
 			} else {
-				s += " "
+				b.WriteRune(' ')
 			}
 		}
-		s += "\n"
+		if row < m.world.RowCount-1 {
+			b.WriteRune('\n')
+		}
 	}
-	return border.Render(s)
+
+	border := lipgloss.NewStyle().
+		Border(lipgloss.NormalBorder(), true)
+	return border.Render(b.String())
 }
 
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
@@ -50,6 +64,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	case frameMsg:
 		m.snake.Move()
+		if m.checkCollision() {
+			return m, tea.Quit
+		}
 		return m, animate()
 
 	case tea.KeyMsg:
