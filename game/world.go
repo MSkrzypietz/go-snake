@@ -1,6 +1,6 @@
 package game
 
 type World struct {
-	RowCount int
+	RowCount    int
 	ColumnCount int
 }

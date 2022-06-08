@@ -9,37 +9,32 @@ const (
 	left
 )
 
-type head struct {
-	x int
-	y int
-}
-
 type Snake struct {
-	head          head
+	head          *Point
 	headDirection direction
 }
 
-func NewSnake() Snake {
-	return Snake{
-		head:          head{x: 10, y: 10},
+func NewSnake() *Snake {
+	return &Snake{
+		head:          NewPoint(10, 10),
 		headDirection: right,
 	}
 }
 
 func (s *Snake) GetPosition() (int, int) {
-	return s.head.x, s.head.y
+	return s.head.X, s.head.Y
 }
 
 func (s *Snake) Move() {
 	switch s.headDirection {
 	case up:
-		s.head.y--
+		s.head.Y--
 	case right:
-		s.head.x++
+		s.head.X++
 	case down:
-		s.head.y++
+		s.head.Y++
 	case left:
-		s.head.x--
+		s.head.X--
 	}
 }
 

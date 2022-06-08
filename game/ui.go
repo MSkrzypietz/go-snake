@@ -16,7 +16,7 @@ type frameMsg time.Time
 
 func InitialModel() Model {
 	return Model{
-		Snake: NewSnake(),
+		Snake: *NewSnake(),
 		World: World{
 			RowCount:    20,
 			ColumnCount: 30,
