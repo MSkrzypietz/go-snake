@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	FPS = 3
+	FPS = 5
 )
 
 type frameMsg time.Time
@@ -21,7 +21,7 @@ func InitialModel() Model {
 			RowCount:    20,
 			ColumnCount: 30,
 		},
-		Food: NewPoint(5, 5),
+		Food: nil,
 	}
 }
 

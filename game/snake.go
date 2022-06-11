@@ -19,9 +19,9 @@ type Snake struct {
 func NewSnake() *Snake {
 	return &Snake{
 		head:          NewPoint(10, 10),
-		headDirection: right,
-		tail:          []Point{},
-		tailLength:    0,
+		headDirection: up,
+		tail:          []Point{*NewPoint(10, 11), *NewPoint(10, 12)},
+		tailLength:    2,
 	}
 }
 

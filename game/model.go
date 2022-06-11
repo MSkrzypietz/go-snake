@@ -9,10 +9,13 @@ type Model struct {
 }
 
 func (m *Model) handleFrame() (done bool) {
+	if m.Food == nil {
+		m.respawnFood()
+	}
 	m.Snake.Move()
 	if m.checkFoodCollision() {
 		m.Snake.Eat()
-		m.respawnFood()
+		m.Food = nil
 	}
 	return m.checkBorderCollision() || m.Snake.TailCollidesWithPoint(m.Snake.head)
 }

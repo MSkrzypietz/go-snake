@@ -10,5 +10,5 @@ func NewPoint(x, y int) *Point {
 }
 
 func (p *Point) Equals(other *Point) bool {
-	return p.X == other.X && p.Y == other.Y
+	return p != nil && other != nil && p.X == other.X && p.Y == other.Y
 }
