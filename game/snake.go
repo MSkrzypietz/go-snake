@@ -26,16 +26,17 @@ func NewSnake() *Snake {
 }
 
 func (s *Snake) CollidesWithPoint(p *Point) bool {
-	if s.head.Equals(p) {
-		return true
-	}
+	return s.head.Equals(p) || s.TailCollidesWithPoint(p)
+}
 
+func (s *Snake) TailCollidesWithPoint(p *Point) bool {
 	for _, tailPoint := range s.tail {
 		if tailPoint.Equals(p) {
 			return true
 		}
 	}
 	return false
+
 }
 
 func (s *Snake) Move() {

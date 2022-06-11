@@ -30,11 +30,16 @@ func (m Model) View() string {
 	for row := 0; row < m.World.RowCount; row++ {
 		for col := 0; col < m.World.ColumnCount; col++ {
 			point := NewPoint(col, row)
-			if m.Snake.CollidesWithPoint(point) || m.Food.Equals(point) {
+			if m.Snake.head.Equals(point) {
 				b.WriteRune('X')
+			} else if m.Snake.TailCollidesWithPoint(point) {
+				b.WriteRune('=')
+			} else if m.Food.Equals(point) {
+				b.WriteRune('O')
 			} else {
 				b.WriteRune(' ')
 			}
+
 		}
 		if row < m.World.RowCount-1 {
 			b.WriteRune('\n')
