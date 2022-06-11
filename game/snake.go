@@ -60,17 +60,25 @@ func (s *Snake) Eat() {
 }
 
 func (s *Snake) TurnUp() {
-	s.headDirection = up
+	if s.headDirection != down {
+		s.headDirection = up
+	}
 }
 
 func (s *Snake) TurnRight() {
-	s.headDirection = right
+	if s.headDirection != left {
+		s.headDirection = right
+	}
 }
 
 func (s *Snake) TurnDown() {
-	s.headDirection = down
+	if s.headDirection != up {
+		s.headDirection = down
+	}
 }
 
 func (s *Snake) TurnLeft() {
-	s.headDirection = left
+	if s.headDirection != right {
+		s.headDirection = left
+	}
 }
