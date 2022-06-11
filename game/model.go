@@ -14,7 +14,7 @@ func (m *Model) handleFrame() (done bool) {
 		m.Snake.Eat()
 		m.respawnFood()
 	}
-	return m.checkBorderCollision()
+	return m.checkBorderCollision() || m.Snake.TailCollidesWithPoint(m.Snake.head)
 }
 
 func (m *Model) checkFoodCollision() bool {
