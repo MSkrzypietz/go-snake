@@ -12,20 +12,36 @@ const (
 type Snake struct {
 	head          *Point
 	headDirection direction
+	tail          []Point
+	tailLength    int
 }
 
 func NewSnake() *Snake {
 	return &Snake{
 		head:          NewPoint(10, 10),
 		headDirection: right,
+		tail:          []Point{},
+		tailLength:    0,
 	}
 }
 
-func (s *Snake) GetPosition() (int, int) {
-	return s.head.X, s.head.Y
+func (s *Snake) CollidesWithPoint(p *Point) bool {
+	if s.head.Equals(p) {
+		return true
+	}
+
+	for _, tailPoint := range s.tail {
+		if tailPoint.Equals(p) {
+			return true
+		}
+	}
+	return false
 }
 
 func (s *Snake) Move() {
+	s.tail = append([]Point{*NewPoint(s.head.X, s.head.Y)}, s.tail...)
+	s.tail = s.tail[:s.tailLength]
+
 	switch s.headDirection {
 	case up:
 		s.head.Y--
@@ -36,6 +52,10 @@ func (s *Snake) Move() {
 	case left:
 		s.head.X--
 	}
+}
+
+func (s *Snake) Eat() {
+	s.tailLength++
 }
 
 func (s *Snake) TurnUp() {

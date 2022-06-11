@@ -1,16 +1,31 @@
 package game
 
+import "math/rand"
+
 type Model struct {
 	Snake Snake
 	World World
-}
-
-func (m *Model) checkCollision() bool {
-	posX, posY := m.Snake.GetPosition()
-	return posX < 0 || posY < 0 || posX >= m.World.ColumnCount || posY >= m.World.RowCount
+	Food  *Point
 }
 
 func (m *Model) handleFrame() (done bool) {
 	m.Snake.Move()
-	return m.checkCollision()
+	if m.checkFoodCollision() {
+		m.Snake.Eat()
+		m.respawnFood()
+	}
+	return m.checkBorderCollision()
+}
+
+func (m *Model) checkFoodCollision() bool {
+	return m.Snake.CollidesWithPoint(m.Food)
+}
+
+func (m *Model) checkBorderCollision() bool {
+	posX, posY := m.Snake.head.X, m.Snake.head.Y
+	return posX < 0 || posY < 0 || posX >= m.World.ColumnCount || posY >= m.World.RowCount
+}
+
+func (m *Model) respawnFood() {
+	m.Food = NewPoint(rand.Intn(m.World.ColumnCount), rand.Intn(m.World.RowCount))
 }

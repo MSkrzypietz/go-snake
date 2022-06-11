@@ -21,15 +21,16 @@ func InitialModel() Model {
 			RowCount:    20,
 			ColumnCount: 30,
 		},
+		Food: NewPoint(5, 5),
 	}
 }
 
 func (m Model) View() string {
 	b := strings.Builder{}
-	posX, posY := m.Snake.GetPosition()
 	for row := 0; row < m.World.RowCount; row++ {
 		for col := 0; col < m.World.ColumnCount; col++ {
-			if posX == col && posY == row {
+			point := NewPoint(col, row)
+			if m.Snake.CollidesWithPoint(point) || m.Food.Equals(point) {
 				b.WriteRune('X')
 			} else {
 				b.WriteRune(' ')
